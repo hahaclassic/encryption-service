@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caesar Cipher</title>
+</head>
+<body>
+    <header>
+        <link rel='stylesheet' href='../css/main.css'>
+        <h1><a href='/'>Cryptography for beginners</a></h1>
+    </header>
+    <nav>
+        <a href="/">Главная</a>
+        <a href="caesar.html">Caesar</a>
+        <a href="vigenere.html">Vigenere</a>
+        <a href="affine.html">Affine</a>
+        <a href="simplesubtitution.html">SimpleSubtitution</a>
+    </nav>
+    <main>
+        <h2>Шифрование сообщения с помощью шифра Цезаря</h2>
+        <form method="post">
+            <div>
+              <label for="message">Message</label>
+              <input name="Message" id="Message" value="{{ .Message }}"></input>
+            </div>
+            <div>
+                <label for="Encrypted">Encrypted message: </label>
+                <output name="Encrypted" id="Encrypted">{{ .Encrypted }}</output>
+            </div>
+            <button>Encrypt message</button>
+        </form>
+        
+    </main>
+</body>
+</html>

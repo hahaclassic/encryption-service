@@ -54,4 +54,6 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/simplesubstitution/", s.HandleSimpleSC())
 	s.router.HandleFunc("/affine/", s.HandleAffine())
 
+	// fileServer := http.FileServer(http.Dir("/home/vladislav/projects/golang_api/ui/css"))
+	// s.router.Handle("/home/vladislav/projects/golang_api/ui/css/", http.StripPrefix("/home/vladislav/projects/golang_api/ui/css", fileServer))
 }
