@@ -1,7 +1,6 @@
 package apiserver
 
 import (
-	"io"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -49,11 +48,10 @@ func (s *APIServer) configureLogger() error {
 }
 
 func (s *APIServer) configureRouter() {
-	s.router.HandleFunc("/hello", s.HandleHello())
-}
+	s.router.HandleFunc("/", s.HandleHome())
+	s.router.HandleFunc("/caesar/", s.HandleCaesar())
+	s.router.HandleFunc("/vigenere/", s.HandleVigenere())
+	s.router.HandleFunc("/simplesubstitution/", s.HandleSimpleSC())
+	s.router.HandleFunc("/affine/", s.HandleAffine())
 
-func (s *APIServer) HandleHello() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "hello")
-	}
 }
