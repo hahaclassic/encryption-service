@@ -12,12 +12,37 @@ import (
 	"github.com/hahaclassic/learning-rest-api.git/internal/app/encryption"
 )
 
-func (s *APIServer) HandleHome() http.HandlerFunc {
+func PostRequestHandler(w http.ResponseWriter, r *http.Request,
+	cipher encryption.EncryptionMethod) encryption.Values {
 
-	type Data struct {
-		Message   string
-		Encrypted string
+	body, _ := ioutil.ReadAll(r.Body)
+
+	words := strings.Split(string(body)[8:], "+")
+
+	var builder strings.Builder
+	for _, word := range words {
+		fmt.Fprintf(&builder, "%s ", word)
 	}
+	message := builder.String()
+	message = message[:len(message)-1]
+
+	values := encryption.Values{
+		Message:  message,
+		Language: "eng",
+	}
+
+	encryption.GetRandomKey(cipher, &values)
+	encryptedMessage := encryption.Encrypt(cipher, values)
+
+	values = encryption.Values{
+		Message:   message,
+		Encrypted: encryptedMessage,
+	}
+
+	return encryptedData
+}
+
+func (s *APIServer) HandleHome() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		ts, err := template.ParseFiles("./ui/html/caesar.html")
@@ -28,55 +53,19 @@ func (s *APIServer) HandleHome() http.HandlerFunc {
 			return
 		}
 
-		if r.Method == http.MethodGet {
+		data := encryption.Values{}
 
-			err = ts.Execute(w, nil)
+		if r.Method == http.MethodPost {
+			// var caesar encryption.EncryptionMethod = &ciphers.CaesarCipher{}
+			data = PostRequestHandler(w, r, &ciphers.CaesarCipher{})
+		}
 
-			if err != nil {
-				s.logger.Println(err.Error())
-				http.Error(w, "Internal Server Error", 500)
-			}
+		err = ts.Execute(w, data)
 
-		} else {
-
-			body, err := ioutil.ReadAll(r.Body)
-			if err == nil {
-				s.logger.Println(string(body))
-			}
-
-			words := strings.Split(string(body)[8:], "+")
-
-			var builder strings.Builder
-			for _, word := range words {
-				fmt.Fprintf(&builder, "%s ", word)
-			}
-			message := builder.String()
-			message = message[:len(message)-1]
-
-			values := encryption.InputValues{
-				Message:  message,
-				Language: "eng",
-			}
-
-			var caesar encryption.EncryptionMethod = &ciphers.CaesarCipher{}
-			encryption.GetRandomKey(caesar, &values)
-			encryptedMessage := encryption.Encrypt(caesar, values)
-
-			s.logger.Println(message)
-			s.logger.Println(encryptedMessage)
-
-			data := Data{
-				Message:   message,
-				Encrypted: encryptedMessage,
-			}
-
-			err = ts.Execute(w, data)
-
-			if err != nil {
-				s.logger.Println(err.Error())
-				http.Error(w, "Internal Server Error", 500)
-			}
-
+		if err != nil {
+			s.logger.Fatal(err)
+			http.Error(w, "Internal Server Error", 500)
+			return
 		}
 
 	}
