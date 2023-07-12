@@ -3,21 +3,20 @@ package apiserver
 import (
 	"net/http"
 
-	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
 
 type APIServer struct {
 	config *Config
 	logger *logrus.Logger
-	router *mux.Router
+	router *http.ServeMux //*mux.Router
 }
 
 func New(config *Config) *APIServer {
 	return &APIServer{
 		config: config,
 		logger: logrus.New(),
-		router: mux.NewRouter(),
+		router: http.NewServeMux(), //mux.NewRouter(),
 	}
 }
 
@@ -54,6 +53,6 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/simplesubstitution/", s.HandleSimpleSC())
 	s.router.HandleFunc("/affine/", s.HandleAffine())
 
-	// fileServer := http.FileServer(http.Dir("/home/vladislav/projects/golang_api/ui/css"))
-	// s.router.Handle("/home/vladislav/projects/golang_api/ui/css/", http.StripPrefix("/home/vladislav/projects/golang_api/ui/css", fileServer))
+	fileServer := http.FileServer(http.Dir("./ui/static/"))
+	s.router.Handle("/static/", http.StripPrefix("/static", fileServer))
 }

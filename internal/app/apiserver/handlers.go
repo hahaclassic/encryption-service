@@ -20,7 +20,7 @@ func (s *APIServer) HandleHome() http.HandlerFunc {
 	}
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		ts, err := template.ParseFiles("/home/vladislav/projects/golang_api/ui/html/caesar.html")
+		ts, err := template.ParseFiles("./ui/html/caesar.html")
 
 		if err != nil {
 			s.logger.Fatal(err)
