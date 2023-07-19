@@ -50,7 +50,7 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/", s.HandleHome())
 	s.router.HandleFunc("/caesar/", s.HandlerCaesar)
 	s.router.HandleFunc("/vigenere/", s.HandlerVigenere)
-	s.router.HandleFunc("/simplesubstitution/", s.HandlerSimpleSubtitution)
+	s.router.HandleFunc("/simplesubstitution/", s.HandlerSimpleSubstitution)
 	s.router.HandleFunc("/affine/", s.HandlerAffine)
 
 	fileServer := http.FileServer(http.Dir("./ui/static/"))

@@ -12,7 +12,7 @@ import (
 	"github.com/hahaclassic/learning-rest-api.git/internal/app/encryption"
 )
 
-func showPage(w http.ResponseWriter, r *http.Request, FilePath string) error {
+func (s *APIServer) showPage(w http.ResponseWriter, r *http.Request, FilePath string) error {
 
 	templ, err := template.ParseFiles(FilePath)
 
@@ -21,11 +21,13 @@ func showPage(w http.ResponseWriter, r *http.Request, FilePath string) error {
 	}
 
 	err = templ.Execute(w, nil)
+	s.logger.Info("GET-request processed successfully")
 
 	return err
 }
 
-func PostRequestHandler(w http.ResponseWriter, r *http.Request, cipher encryption.EncryptionMethod) error {
+func (s *APIServer) PostRequestHandler(w http.ResponseWriter, r *http.Request,
+	cipher encryption.EncryptionMethod) error {
 
 	body, _ := ioutil.ReadAll(r.Body)
 	data := encryption.Values{}
@@ -34,6 +36,8 @@ func PostRequestHandler(w http.ResponseWriter, r *http.Request, cipher encryptio
 	if err != nil {
 		return err
 	}
+
+	s.logger.Println("Input Data: ", data)
 
 	switch data.OperationType {
 	case "Encrypt":
@@ -51,6 +55,8 @@ func PostRequestHandler(w http.ResponseWriter, r *http.Request, cipher encryptio
 	if err != nil {
 		return err
 	}
+
+	s.logger.Println("Output Data: ", data)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(JsonData)
@@ -70,9 +76,9 @@ func (s *APIServer) HandlerCaesar(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	if r.Method == http.MethodGet {
-		err = showPage(w, r, "./ui/html/caesar.html")
+		err = s.showPage(w, r, "./ui/html/caesar.html")
 	} else {
-		err = PostRequestHandler(w, r, &ciphers.CaesarCipher{})
+		err = s.PostRequestHandler(w, r, &ciphers.CaesarCipher{})
 	}
 
 	if err != nil {
@@ -87,9 +93,9 @@ func (s *APIServer) HandlerVigenere(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	if r.Method == http.MethodGet {
-		err = showPage(w, r, "./ui/html/vigenere.html")
+		err = s.showPage(w, r, "./ui/html/vigenere.html")
 	} else {
-		err = PostRequestHandler(w, r, &ciphers.VigenereCipher{})
+		err = s.PostRequestHandler(w, r, &ciphers.VigenereCipher{})
 	}
 
 	if err != nil {
@@ -104,9 +110,9 @@ func (s *APIServer) HandlerAffine(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	if r.Method == http.MethodGet {
-		err = showPage(w, r, "./ui/html/affine.html")
+		err = s.showPage(w, r, "./ui/html/affine.html")
 	} else {
-		err = PostRequestHandler(w, r, &ciphers.AffineCipher{})
+		err = s.PostRequestHandler(w, r, &ciphers.AffineCipher{})
 	}
 
 	if err != nil {
@@ -116,14 +122,14 @@ func (s *APIServer) HandlerAffine(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (s *APIServer) HandlerSimpleSubtitution(w http.ResponseWriter, r *http.Request) {
+func (s *APIServer) HandlerSimpleSubstitution(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 
 	if r.Method == http.MethodGet {
-		err = showPage(w, r, "./ui/html/simplesubtitution.html")
+		err = s.showPage(w, r, "./ui/html/simplesubstitution.html")
 	} else {
-		err = PostRequestHandler(w, r, &ciphers.SimpleSubstitutionCipher{})
+		err = s.PostRequestHandler(w, r, &ciphers.SimpleSubstitutionCipher{})
 	}
 
 	if err != nil {
