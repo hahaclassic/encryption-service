@@ -1,9 +1,11 @@
 package encryption
 
 type Values struct {
-	Message  string
-	Key      string
-	Language string
+	OperationType    string `json:"operation_type"`
+	OriginalMessage  string `json:"original"`
+	ConvertedMessage string `json:"converted"`
+	Key              string `json:"key"`
+	Language         string `json:"language"`
 }
 
 type EncryptionMethod interface {
@@ -13,21 +15,20 @@ type EncryptionMethod interface {
 	GetRandomKey() string
 }
 
-func Encrypt(cipher EncryptionMethod, values Values) string {
-	cipher.GetAlphabet(values.Language)
-	encryptedMessage := cipher.EncryptMessage(values.Message, values.Key)
+func Encrypt(cipher EncryptionMethod, data *Values) {
+	cipher.GetAlphabet(data.Language)
 
-	return encryptedMessage
+	data.ConvertedMessage = cipher.EncryptMessage(data.OriginalMessage, data.Key)
 }
 
-func Decrypt(cipher EncryptionMethod, values Values) string {
-	cipher.GetAlphabet(values.Language)
-	decryptedMessage := cipher.DecryptMessage(values.Message, values.Key)
+func Decrypt(cipher EncryptionMethod, data *Values) {
+	cipher.GetAlphabet(data.Language)
 
-	return decryptedMessage
+	data.ConvertedMessage = cipher.DecryptMessage(data.OriginalMessage, data.Key)
 }
 
-func GetRandomKey(cipher EncryptionMethod, values *Values) {
-	cipher.GetAlphabet(values.Language)
-	values.Key = cipher.GetRandomKey()
+func GetRandomKey(cipher EncryptionMethod, data *Values) {
+	cipher.GetAlphabet(data.Language)
+
+	data.Key = cipher.GetRandomKey()
 }

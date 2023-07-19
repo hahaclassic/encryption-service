@@ -1,95 +1,134 @@
 package apiserver
 
 import (
-	"fmt"
+	"encoding/json"
+	"errors"
 	"html/template"
 	"io"
 	"io/ioutil"
 	"net/http"
-	"strings"
 
 	"github.com/hahaclassic/learning-rest-api.git/internal/app/ciphers"
 	"github.com/hahaclassic/learning-rest-api.git/internal/app/encryption"
 )
 
-func PostRequestHandler(w http.ResponseWriter, r *http.Request,
-	cipher encryption.EncryptionMethod) encryption.Values {
+func showPage(w http.ResponseWriter, r *http.Request, FilePath string) error {
+
+	templ, err := template.ParseFiles(FilePath)
+
+	if err != nil {
+		return err
+	}
+
+	err = templ.Execute(w, nil)
+
+	return err
+}
+
+func PostRequestHandler(w http.ResponseWriter, r *http.Request, cipher encryption.EncryptionMethod) error {
 
 	body, _ := ioutil.ReadAll(r.Body)
+	data := encryption.Values{}
+	err := json.Unmarshal(body, &data)
 
-	words := strings.Split(string(body)[8:], "+")
-
-	var builder strings.Builder
-	for _, word := range words {
-		fmt.Fprintf(&builder, "%s ", word)
-	}
-	message := builder.String()
-	message = message[:len(message)-1]
-
-	values := encryption.Values{
-		Message:  message,
-		Language: "eng",
+	if err != nil {
+		return err
 	}
 
-	encryption.GetRandomKey(cipher, &values)
-	encryptedMessage := encryption.Encrypt(cipher, values)
-
-	values = encryption.Values{
-		Message:   message,
-		Encrypted: encryptedMessage,
+	switch data.OperationType {
+	case "Encrypt":
+		encryption.Encrypt(cipher, &data)
+	case "Decrypt":
+		encryption.Decrypt(cipher, &data)
+	case "GetRandomKey":
+		encryption.GetRandomKey(cipher, &data)
+	default:
+		return errors.New("Wrong operation type")
 	}
 
-	return encryptedData
+	JsonData, err := json.Marshal(data)
+
+	if err != nil {
+		return err
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(JsonData)
+
+	return nil
 }
 
 func (s *APIServer) HandleHome() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		ts, err := template.ParseFiles("./ui/html/caesar.html")
-
-		if err != nil {
-			s.logger.Fatal(err)
-			http.Error(w, "Internal Server Error", 500)
-			return
-		}
-
-		data := encryption.Values{}
-
-		if r.Method == http.MethodPost {
-			// var caesar encryption.EncryptionMethod = &ciphers.CaesarCipher{}
-			data = PostRequestHandler(w, r, &ciphers.CaesarCipher{})
-		}
-
-		err = ts.Execute(w, data)
-
-		if err != nil {
-			s.logger.Fatal(err)
-			http.Error(w, "Internal Server Error", 500)
-			return
-		}
-
+		io.WriteString(w, "Welcome Home")
 	}
 }
 
-func (s *APIServer) HandleCaesar() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "Caesar Cipher")
+func (s *APIServer) HandlerCaesar(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	if r.Method == http.MethodGet {
+		err = showPage(w, r, "./ui/html/caesar.html")
+	} else {
+		err = PostRequestHandler(w, r, &ciphers.CaesarCipher{})
 	}
-}
-func (s *APIServer) HandleVigenere() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "Vigenere Cipher")
+
+	if err != nil {
+		s.logger.Fatal(err)
+		http.Error(w, "Internal Server Error", 500)
 	}
+
 }
 
-func (s *APIServer) HandleSimpleSC() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "simple Substitution Cipher")
+func (s *APIServer) HandlerVigenere(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	if r.Method == http.MethodGet {
+		err = showPage(w, r, "./ui/html/vigenere.html")
+	} else {
+		err = PostRequestHandler(w, r, &ciphers.VigenereCipher{})
 	}
+
+	if err != nil {
+		s.logger.Fatal(err)
+		http.Error(w, "Internal Server Error", 500)
+	}
+
 }
 
-func (s *APIServer) HandleAffine() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "Affine CIpher")
+func (s *APIServer) HandlerAffine(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	if r.Method == http.MethodGet {
+		err = showPage(w, r, "./ui/html/affine.html")
+	} else {
+		err = PostRequestHandler(w, r, &ciphers.AffineCipher{})
 	}
+
+	if err != nil {
+		s.logger.Fatal(err)
+		http.Error(w, "Internal Server Error", 500)
+	}
+
+}
+
+func (s *APIServer) HandlerSimpleSubtitution(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	if r.Method == http.MethodGet {
+		err = showPage(w, r, "./ui/html/simplesubtitution.html")
+	} else {
+		err = PostRequestHandler(w, r, &ciphers.SimpleSubstitutionCipher{})
+	}
+
+	if err != nil {
+		s.logger.Fatal(err)
+		http.Error(w, "Internal Server Error", 500)
+	}
+
 }

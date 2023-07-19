@@ -48,10 +48,10 @@ func (s *APIServer) configureLogger() error {
 
 func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/", s.HandleHome())
-	s.router.HandleFunc("/caesar/", s.HandleCaesar())
-	s.router.HandleFunc("/vigenere/", s.HandleVigenere())
-	s.router.HandleFunc("/simplesubstitution/", s.HandleSimpleSC())
-	s.router.HandleFunc("/affine/", s.HandleAffine())
+	s.router.HandleFunc("/caesar/", s.HandlerCaesar)
+	s.router.HandleFunc("/vigenere/", s.HandlerVigenere)
+	s.router.HandleFunc("/simplesubstitution/", s.HandlerSimpleSubtitution)
+	s.router.HandleFunc("/affine/", s.HandlerAffine)
 
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
 	s.router.Handle("/static/", http.StripPrefix("/static", fileServer))
