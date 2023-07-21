@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="/static/js/request_handler.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +15,10 @@
     </header>
     <nav>
         <a href="/">Главная</a>
-        <a href="caesar.html">Caesar</a>
-        <a href="vigenere.html">Vigenere</a>
-        <a href="affine.html">Affine</a>
-        <a href="simplesubtitution.html">SimpleSubtitution</a>
+        <a href="/caesar">Caesar</a>
+        <a href="/vigenere">Vigenere</a>
+        <a href="/affine">Affine</a>
+        <a href="/simplesubstitution">SimpleSubtitution</a>
     </nav>
     <main>
         <h2>Шифрование сообщения с помощью шифра Цезаря</h2>
@@ -37,52 +38,17 @@
                 <output name="Encrypted" id="ConvertedMessage"></output>
             </div>
 
-            <button onclick="sendJSON()">Encrypt Message</button>
-            <script>
-                // эта функция сработает при нажатии на кнопку
-                function sendJSON() {
-                    console.log('hello')
-                    // с помощью jQuery обращаемся к элементам на странице по их именам
-                    let OriginalMessage = document.querySelector('#OriginalMessage');
-                    let ConvertedMessage = document.querySelector('#ConvertedMessage');
-                    let Key = document.querySelector('#Key');
+            <div>
+            <button id="GetRandomKey">Get random key</button>
+            </div>
 
-                    // а вот сюда мы поместим ответ от сервера
-                    //let result = document.querySelector('#ConvertedMessage');
-                    // создаём новый экземпляр запроса XHR
-                    let xhr = new XMLHttpRequest();
-                    // адрес, куда мы отправим нашу JSON-строку
-                    let url = "http://localhost:8080/caesar/";
-                    // открываем соединение
-                    xhr.open("POST", url, true);
-                    // устанавливаем заголовок — выбираем тип контента, который отправится на сервер, в нашем случае мы явно пишем, что это JSON
-                    xhr.setRequestHeader("Content-Type", "application/json");
+            <div>
+            <button id="EncryptButton">Encrypt Message</button>
+            </div>
 
-                    // когда придёт ответ на наше обращение к серверу, мы его обработаем здесь
-                    xhr.onreadystatechange = function () {
-                        // если запрос принят и сервер ответил, что всё в порядке
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                        // выводим то, что ответил нам сервер — так мы убедимся, что данные он получил правильно
-
-                            ConvertedMessage.value = JSON.parse(this.responseText).converted;
-                        }
-                    };
-                   
-                    // преобразуем наши данные JSON в строку
-                    // OperationType    string `json:"operation_type"`
-                    // OriginalMessage  string `json:"original"`
-                    // ConvertedMessage string `json:"converted"`
-                    // Key              string `json:"key"`
-                    // Language         string `json:"language"`
-
-                    var data = JSON.stringify({ "operation_type": "Encrypt",
-                     "original": OriginalMessage.value, "converted": "", 
-                    "key": Key.value, "language": "eng"});
-                    // когда всё готово, отправляем JSON на сервер
-                    xhr.send(data);
-                }
-            </script>
-    
+            <div>
+            <button id="DecryptButton">Decrypt Message</button>
+            </div>
         </p>
     </main>
 </body>
