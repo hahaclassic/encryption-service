@@ -1,0 +1,221 @@
+* {
+    box-sizing:border-box;
+  }
+
+body {
+    margin:20px;
+    background-color: #1d1d1d;
+  }
+
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    /* background-color: gray; */
+    padding: 1em;
+    box-sizing: border-box;
+}   
+
+.header {
+    width: 30%;
+}
+
+.header label {
+    font-size: 30px;
+    color: #c6c4c1;
+    text-align: left;
+    text-decoration: none;
+}
+
+.topnav {
+    width: 70%;
+    background-color: #333;
+    overflow: hidden;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+
+
+h2 {
+    color: #c6c4c1;
+}
+
+
+.inputNames {
+    display: flex;
+    /* justify-content: space-between; */
+    /* background-color: gray; */
+    /* padding: 1em; */
+    box-sizing: border-box;
+}
+
+.label1 {
+    margin-top: 10px;
+    width: 50%;
+    font-size: 15px;
+    color: #c6c4c1;
+    background-color: #3c3c3c;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    height: 40px;
+    text-align: center;
+    border-width: 1px;
+    border-color:  #4a4849;
+}
+
+.label1 input {
+    font-size: 15px;
+    color: #c6c4c1;
+    background-color: #3c3c3c;
+    border-radius: 0px;
+    border-width: 0px;
+}
+
+.label2 {
+    margin-top: 10px;
+    width: 50%;
+    font-size: 15px;
+    color: #c6c4c1;
+    background-color: #3c3c3c;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    height: 40px;
+    text-align: center;
+    border-width: 1px;
+    border-color:  #4a4849;
+}
+
+.label2 input {
+    font-size: 15px;
+    color: #c6c4c1;
+    background-color: #3c3c3c;
+    border-radius: 0px;
+    border-width: 0px;
+}
+
+
+.swap button {
+    background-image: url('/static/img/swap.svg');
+    margin-top: 10px;
+    margin-bottom: 0px;
+    width: 40px;
+    height: 40px;
+    border-radius: 0px;
+    border-width: 0px;
+    background-color: #3c3c3c;
+    outline: 0;
+    outline-offset: 0;
+    /* background-size: cover; */
+}
+
+
+
+
+
+.key textarea {
+    height:50px;
+}
+
+.key label {
+    color: #c6c4c1;
+}
+
+
+
+textarea {
+    background-color: #3c3c3c;
+    color: #c6c4c1;
+    width:100%;
+    resize: none;
+    padding:15px;
+    border-radius:15px;
+    outline: 0;
+    outline-offset: 0;
+    box-shadow:4px 4px 10px rgba(0,0,0,0.06);
+    height:150px;
+    border-width: 1px;
+    border-color:  #4a4849;
+}
+
+.textarea:hover {
+    border: 1px solid #aaa;
+}
+
+
+label {
+    font-size: 17px;
+}
+
+.inputContainer {
+    display: flex;
+    justify-content: space-between;
+    /* background-color: gray; */
+    /* padding: 1em; */
+    box-sizing: border-box;
+}
+  
+.origin {
+    width: 50%;
+}
+
+.converted {
+    width: 50%;
+    /* margin: 10px 0; */
+}
+
+.origin textarea {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 0px;
+}
+
+.converted textarea {
+    background-color: #4a4849;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 15px;
+}
+
+button {
+    margin:10px 0;
+    /* remove default behavior */
+    appearance:none;
+    -webkit-appearance:none;
+    /* usual styles */
+    padding:10px;
+    border:none;
+    background-color:#456c82;
+    color: #c6c4c1;
+    font-weight:600;
+    border-radius:15px;
+ }
+
+
