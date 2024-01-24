@@ -5,7 +5,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caesar Cipher</title>
+    <title id="title">Caesar Cipher</title>
     <link rel='stylesheet' href='/static/css/first.css'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700'>
 </head>
@@ -17,21 +17,34 @@
 
         <div class="topnav">
             <a href="/">Home</a>
-            <a href="/caesar">Caesar</a>
+            <a id="current" href="/caesar">Caesar</a>
             <a href="/vigenere">Vigenere</a>
             <a href="/affine">Affine</a>
-            <a href="/simplesubstitution">SimpleSubtitution</a>
+            <a href="/simplesubstitution">SimpleSubstitution</a>
         </div>
     </div>
-
 
     <main>
         <h2>Caesar Cipher</h2>
 
+        <div class="textblock">
+            <p class="paragraph">Историческая справка</p>
+            <p class="text">Стоить заменить, что криптография пояявилась еще за долго 
+до создания компьютеров. Первые "шифры" начали использоваться еще несколько
+тысяч лет назад в виде тайнописей или иероглифов. Но наиболее известным 
+способом шифрования из древности стал Шифр Цезаря.</p>
+
+            <p class="paragraph">Принцип работы</p>
+            <p class="text">Шифр Цезаря основан на замене одной буквы другой после предварительного смещения всег алфамита на определенное число позиций. Юлий Цезарь заменял буквы в своих секретных сообщениях путем смещения алфавита на три позиции и последующей замены каждой буквы соответствующей буквой из смещенного алфавита. Шифр Цезаря можно классифицировать как шифр подстановки, при более узкой классификации - шифр простой замены. В шифре Цезаря ключом является количевство символов, на которое мы смещаем алфавит. К примеру, если ключ
+
+            </p>
+
+        </div>
+
+
         <div class="key">
             <textarea placeholder="Enter a key" name="key" id="Key" oninput="sendRequest()"></textarea>
         </div>
-
 
         <div class="inputNames">
             <div class="label1">

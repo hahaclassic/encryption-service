@@ -12,7 +12,26 @@ function sendJSON(OperationType) {
     // создаём новый экземпляр запроса XHR
     let xhr = new XMLHttpRequest();
     // адрес, куда мы отправим нашу JSON-строку
-    let url = "http://localhost:8080/caesar/";
+
+    const title = document.querySelector('#title')
+    let url
+
+    switch (title) {
+        case 'Caesar Cipher':
+            url = "http://localhost:8080/caesar/";
+        
+        case 'Affine Cipher':
+            url = "http://localhost:8080/affine/";
+
+        case 'Vigenere Cipher':
+            url = "http://localhost:8080/vigenere/";
+
+        case 'Simple Substitution Cipher':
+            url = "http://localhost:8080/caesar/";
+
+    }
+
+
     // открываем соединение
     xhr.open("POST", url, true);
     // устанавливаем заголовок — выбираем тип контента, который отправится на сервер, в нашем случае мы явно пишем, что это JSON
